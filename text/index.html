@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>画线</title>
+    <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+    <style type="text/css">
+        div{
+            width: 500px;
+            height: 500px;
+            box-sizing: border-box;
+            border: 2px solid #7DA2CE;
+            position: relative;
+            left: 0;
+            top: 0;
+        }
+        canvas{
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -1;
+        }
+        .dot{
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            background-color: #000;
+        }
+    </style>
+</head>
+<body>
+<div id="content"></div>
+<canvas id="canvas"></canvas>
+</body>
+<script type="text/javascript">
+    var canvas = document.querySelector('#canvas');
+    var dv = $('div').eq(0);
+    canvas.width = parseInt(dv.css('width'));
+    canvas.height = parseInt(dv.css('height'));
+    var ctx = canvas.getContext('2d');
+    var arrX = [],arrY = [];
+    dv.bind('mousedown',function(e){
+        var x,y;
+        x = e.offsetX;
+        y = e.offsetY;
+        arrX.push(x);
+        arrY.push(y);
+        console.log('X轴'+arrX);
+        console.log('Y轴'+arrY);
+        dv.bind('mousemove',function(ev){
+            var mx,my;
+            mx = ev.offsetX;
+            my = ev.offsetY;
+            arrX.push(mx);
+            arrY.push(my);
+            drawline(arrX,arrY);
+        })
+    });
+    dv.bind('mouseup',function(e){
+        var fx,fy;
+        fx = e.offsetX;
+        fy = e.offsetY;
+        arrX.push(fx);
+        arrY.push(fy);
+        console.log('X轴'+arrX);
+        console.log('Y轴'+arrY);
+        $(this).unbind('mousemove');
+        arrX.length = 0;
+        arrY.length = 0;
+    });
+dv.bind('click',function(e){
+    var Fx,Fy,Lx,Ly;
+    arr.push(e.offsetX, e.offsetY);
+    console.log(arr);
+    if(arr.length == 4){
+        drawline(arr[0],arr[1],arr[2],arr[3]);
+        arr.length = 0;
+    }
+    //console.log(e.offsetX);
+    //console.log(e.offsetY);
+});
+    drawline(30,100,46,500);
+    function drawline(arrx,arry){
+        ctx.beginPath();
+        ctx.moveTo(arrx[0],arry[0]);
+        ctx.lineTo(arrx[arrx.length-1],arry[arry.length-1]);
+        ctx.stroke();
+        ctx.closePath();
+    }
+</script>
+<script type="text/javascript">
+    $('#content').bind('mousedown',function(e){
+        var x,y;
+        x = e.offsetX;
+        y = e.offsetY;
+        var item = '<div class="dot" style="left: '+x+'px;top: '+y+'px;"></div>';
+        $(this).append(item);
+        $('#content').bind('mousemove',function(e){
+            var x,y;
+            x = e.offsetX;
+            y = e.offsetY;
+            var item = '<div class="dot" style="left: '+x+'px;top: '+y+'px;"></div>';
+            $(this).append(item);
+        })
+    });
+    $('#content').bind('mouseup',function(e){
+        var x,y;
+        x = e.offsetX;
+        y = e.offsetY;
+        var item = '<div class="dot" style="left: '+x+'px;top: '+y+'px;"></div>';
+        $(this).append(item);
+        $(this).unbind('mousemove');
+    });
+</script>
+</html>
