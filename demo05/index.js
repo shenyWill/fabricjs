@@ -1,12 +1,18 @@
 window.onload = function() {
     var canvas = new fabric.Canvas('c');
-    var path = new fabric.Path('M 0 0 L 200 100 L 170 200 z');
-
-    path.set({
-        left: 120,
-        top: 120,
+    
+    var rect = new fabric.Rect({
+        left: 100,
+        top: 100,
+        height: 100,
+        width: 100,
         fill: 'green'
     })
-
-    canvas.add(path);
+    rect.set('angle', 45);
+    rect.animate('angle', '+=360', {
+        onChange: canvas.renderAll.bind(canvas),
+        duration: 2000,
+        easing: fabric.util.ease.easeOutBounce
+    })
+    canvas.add(rect);
 }
